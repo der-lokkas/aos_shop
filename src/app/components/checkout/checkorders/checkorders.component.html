@@ -33,21 +33,21 @@
 </div>
 <ng-template #noData>
   <div class="payment-finish">
-      <p class="no-prod-text">No products in the cart</p>
+      <p class="no-prod-text">Keine Produkte im Einkaufswagen</p>
       <div class="no-active" [ngClass]="{'active': thanksText == true}">
-        Thanks <span>{{namePayer}}</span><span> {{surnamePayer}}</span>
-        to order from MateStore!!
+        Danke <span>{{namePayer}}</span><span> {{surnamePayer}}</span>
+        für ihre Bestellung bei AOS!!
       </div>
   </div>
 </ng-template>
 <div *ngIf="cartLength > 0;" class="row checkout-total-price">
-  <p>Total: {{getTotalQty() | async}} x {{getTotal() | async | currency:currency_code:'symbol-narrow':'2.2-2'}}</p>
+  <p>Gesamt: {{getTotalQty() | async}} x {{getTotal() | async | currency:currency_code:'symbol-narrow':'2.2-2'}}</p>
 </div>
 <div class="row">
   <div class="col-md-12 box-button-checkout">
     <div class="row">
       <div class="col-12 col-md-4">
-        <button class="btn btn-primary btn-shop mt-2" routerLink="/">Continue Shopping</button>
+        <button class="btn btn-primary btn-shop mt-2" routerLink="/">Weiter einkaufen</button>
       </div>
       <div class="col-12 col-md-4">
         <div class="content-paypal-button" *ngIf='payItems.length > 0'>

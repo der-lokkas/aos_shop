@@ -44,7 +44,7 @@ export class StripeComponent implements OnInit {
     });
 
     handler.open({
-      name: 'Mate Store',
+      name: 'AOS',
       description: this.quantity + 'products',
       amount: ((this.price + this.totalTax)) * 100
     });
