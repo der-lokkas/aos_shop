@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MateStore</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The best Shopping Cart">
+  <meta name="keywords" content="shopping, cart, money, buy, financial, shop, e-commerce">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&amp;subset=cyrillic" rel="stylesheet">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<section id="intro">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1><span class="title">Mate</span>Store</h1>
+                <h3>Document Created: 03/07/2019 by ThemeOxygen</h3>
+                
+                <p>Hi this is a small Shopping Cart that use Angular 8 with PayPal</p>
+                <p>Thank you for purchasing my application. If you have any questions that are 
+                    beyond the scope of this help file, please feel free to email via my 
+                    user page contact form <a href="https://themeforest.net/user/themeoxygen">here</a>. 
+                    Thanks so much!
+                </p>
+                <p>
+                    I suggest to run in <strong>Visual Studio Code</strong>, but you can use any other
+                    environments.
+                </p>
+                <p><strong>1: npm instal</strong></p>
+                <p><strong>2: npm start</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Publish on Server or Domain</h3>
+                <p>run this command on terminal : ng build --prod</p>
+                <p>Take the file inside dist/{name_folder}, and add on server</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="general">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Save Data on Local Storage <span>( New )</span></h3>
+                <p>You can find two file for manage the cart.
+                    One is cart.service.ts and don't save data on local storage.
+                    The second is cart-storage.service.ts, and save data on local storage so you
+                    have a persistent data also when you refresh page.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>App Component</h3>
+                <p>File: app.component.html</p>
+                <p>This is a general component who containe the navigation (app-nav),
+                    the general content (router-outlet) and the footer (app-footer).
+                </p>
+                <p>app-nav: it s a logo + cart</p>
+                <p>router-outlet: it s list of products or details product or checkout</p>
+                <p>app-footer: it s a copyrightand info transport</p>
+                <pre>
+                    &lt;div class="container"&gt;
+                        &lt;app-nav&gt;&lt;/app-nav&gt;
+                        &lt;router-outlet&gt;&lt;/router-outlet&gt;
+                    &lt;/div&gt;
+                        &lt;app-footer>&lt;/app-footer&gt;
+                </pre>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="routing">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Routing</h3>
+                <p>File: app.routing.module</p>
+                <p>Easy structure, we have just two link one for go to the payment, and the other 
+                    for go in the details of product.
+                </p>
+                <pre>
+                        const routes: Routes = [
+                        {
+                          path: '',
+                          component: BodyComponent
+                        },
+                        {
+                          path: 'checkout/checkorders',
+                          component: CheckordersComponent
+                        },
+                        {
+                          path: 'product-details/:id',
+                          component: ProductDetailsComponent
+                        },
+                        {
+                          path: "**",
+                          component: BodyComponent
+                        }
+                      ];
+                </pre>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="configuration">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Configuration</h3>
+                <p>File: app.config</p>
+                <p>Contains link to json file and the currency value, if you change this reflect in cart, into checkout and list of product.</p>
+                <p>The API cal the type of product json, if you want product organic or forniture or mixed.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="tax">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Service Tax</h3>
+                <p>File: tax.service.ts</p>
+                <p>This file contains the function for calculate the tax, incoming Tax, duty Tax</p>
+                <p>
+                    Basic sales tax is applicable at a rate of 10% on all goods, except books, food, and medical products that are exempt. 
+                    Import duty is an additional sales tax applicable on all 
+                    imported goods at a rate of 5%, with no exemptions.
+                    The rounding rules for sales tax are that for a tax rate of n%, a shelf price of p contains 
+                    (np/100 rounded up to the nearest 0.05) amount of sales tax.
+                </p>
+                <pre>
+                        export class TaxService {
+
+                            constructor() {}
+                        
+                            public calculateTax(category, price, localTax, dutyTax, imported){
+                        
+                                let tax:number = 0;
+                        
+                                if(
+                                    category == "Vases" || 
+                                    category == "Chairs" || 
+                                    category == "Lamp" 
+                                    )
+                                    tax = ( price * localTax ) / 100;   
+                          
+                                if (imported)
+                                  tax += (price * dutyTax) / 100;
+                          
+                                return tax;
+                            }
+                        
+                        }
+                </pre>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="data">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>List Product</h3>
+                <p>File: data.service.ts</p>
+                <p>This file contains a service who give back list of products and the observable response from paypal</p>
+                <p>When the payment status it's COMPLETED we send the response at the services for show in the checkout page.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="filter">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Filter Service</h3>
+                <p>File: filter.service.ts</p>
+                <p>We need this function for filtering the data/products in the home page.</p>
+                <p>The categories filter you can change inside at json.</p>
+
+                <img src="images/filter.jpg"/>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="products">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>List of Products</h3>
+                <p>File: products.service.ts</p>
+                <p>This file contains the API who call json for get the list of products, and categories for filter.</p>
+                
+            </div>
+        </div>
+    </div>
+</section>
+<section id="cart">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Component Cart</h3>
+                <p>File: cart.component.html, cart.component.ts</p>
+                <p>Here you find different function example getTotalQty for calculate the quantity of 
+                    product we have inside cart, getTotalTaxes who calculate the taxes for the product who is imported 
+                    and the local taxes,  getTotal who give ass the total amount, and another function for remove
+                    single product from cart.
+                </p>
+                <p>This component use the service <strong>cart.service.ts</strong>, where you find
+                all service it's used for manage cart and checkout products.</p>
+                <img src="images/cart.jpg"/>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="payment">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Component PayPal Payment</h3>
+                    <p>File: payment.component.ts</p>
+                    <p>So for use the paypal in demo mode you need to open two account in sandbox PayPal 
+                        <a href="https://developer.paypal.com/developer/accounts/">https://developer.paypal.com/developer/accounts/</a>
+                        one for client and another for business who receive the money.
+                        After this you receive one clientId and you need to add here:
+                        clientId: 'sb' remove sb and add your clientID.
+                        After this you can test your application.
+                    </p>
+                    <p>For use in real mode you need only to add the clientId from your account
+                            where you want receive money.</p>
+                    <p>
+                        If you want change the taxation for transaction PayPal you need to change
+                        totalTax:number = 0.7;
+                        More info you find here:
+                        <a href="https://developer.paypal.com/docs/api/payments/v2/">https://developer.paypal.com/docs/api/payments/v2/</a>
+                        or write me a message.
+                    </p>
+                    <pre>
+                            totalTax:number = 0.7;
+
+                            private initConfig():void{
+
+                                this.payPalConfig = {
+                                  currency:this.currency_code,
+                                  clientId: 'sb',
+                            
+                                  createOrderOnClient: (data) => &lt;ICreateOrderRequest&gt;{
+                                    intent: 'CAPTURE',
+                                    purchase_units: [
+                                      {
+                                        amount:{
+                                          currency_code:this.currency_code,
+                                          value:this.priceTaxed,
+                                          breakdown:{
+                                            item_total:{
+                                              currency_code:this.currency_code,
+                                              value:this.price.toFixed(2)
+                                            },
+                                            shipping:{
+                                              currency_code:this.currency_code,
+                                              value:'0.00',
+                                            },
+                                            handling:{
+                                              currency_code:this.currency_code,
+                                              value:'0.00',
+                                            },
+                                            tax_total:{
+                                              currency_code:this.currency_code,
+                                              value:this.totalTax.toFixed(2),
+                                            }
+                                          }
+                                        },
+                                        items:this.items
+                                      }
+                                    ]
+                                  },
+                                  advanced: {
+                                    commit: 'true'
+                                  },
+                                  style: {
+                                    label: 'paypal',
+                                    layout: 'vertical'
+                                  },
+                                  onApprove: (data, actions) => {
+                                    //console.log('onApprove - transaction was approved, but not authorized', data, actions);
+                                    actions.order.get().then(details => {
+                                      //console.log('onApprove - you can get full order details inside onApprove: ', details);
+                                    });
+                                  },
+                                  onClientAuthorization: (data) => {
+                                    
+                                    if(data.status == 'COMPLETED'){
+                                      this._dataService.changeData(data);
+                                      this.showSuccess = true;
+                                    }
+                                    else{
+                                      this.showSuccess = false;
+                                    }
+                                    //console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+                                    
+                                  },
+                                  onCancel: (data, actions) => {
+                                    console.log('OnCancel', data, actions);
+                                  },
+                                  onError: err => {
+                                    console.log('OnError', err);
+                                  },
+                                  onClick: (data, actions) => {
+                                    this.priceTaxed = (this.price + this.totalTax).toFixed(2); 
+                                  },
+                                }
+                              }
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="grid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3>Filter Layout List / Grid</h3>
+                        <p>Library: @angular/flex-layout @angular/cdk</p>
+                        <p>Option to show grid layout and list layout with more info about products.</p>
+                        <p>for have this modality it's realy easy need only too instal library and change the content fxLayout="column" or fxLayout="row" </p>
+        
+                        <img src="images/grid.jpg"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+<section class="footer">
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <p>Once again, thank you so much for purchasing this theme. As I said at 
+                    the beginning, I'd be glad to help you if you have any questions 
+                    relating to this theme. No guarantees, but I'll do my best to assist. 
+                    If you have a more general question relating to the themes on ThemeForest, 
+                    you might consider visiting the forums and asking your question in the "Item Discussion" 
+                    section.</p>
+
+                <p class="append-bottom alt large"><strong>Theme Oxygen</strong></p>
+        </div>
+    </div>
+</div>
+</section>
+
+</body>
+</html>

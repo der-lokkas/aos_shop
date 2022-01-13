@@ -1,0 +1,19 @@
+
+@import "../../../../_sass/_variables";
+
+.btn-stripe{
+    border-radius: 25px;
+    padding: 10px 35px;
+    font-weight: 600;
+    color:#fff;
+    cursor: pointer;
+    background: #4e64e2;
+    border:1px solid #4e64e2;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    @media (max-width: $sm-device) {
+        width:100%;
+        margin-bottom:20px;
+    }
+}
